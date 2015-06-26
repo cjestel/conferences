@@ -1,0 +1,59 @@
+SHOW HELP
+./dbdeployer.sh –h
+
+SHOW DEPLOYMENT DATABASE TRACKS DBDEPLOYER
+psql deployments
+select * from deployment_tracker;
+
+SHOW OFFERS TO CREATE DB
+./dbdeployer.sh –r –d central
+(cancel/NO)
+
+SHOW CREATES DB WITH CONFIRM FLAG AND RUNS REPORT
+./dbdeployer.sh –r –d  central –c
+
+SHOW FAILED DEPLOYMENT
+./dbdeployer.sh -f central/changes/20150402_add_request_uuid_to_audits.sql
+psql deployments
+select * from deployment_tracker;
+
+SHOW SUCCESSFUL SINGLE FILE DEPLOYMENT
+./dbdeployer.sh -f central/schema/1000_schema.sql
+
+SHOW FILE NO LONGER IN REPORT
+./dbdeployer.sh –d central –r
+
+SHOW BRING TO CURRENT FLAG
+./dbdeployer.sh –d central –u
+
+SHOW REPORT IS EMPTY NOW
+./dbdeployer.sh –d central –r
+
+SHOW ROLLBACK
+cat central/rollback/20150521_add_team_id_to_workflow_queues.sql 
+ALTER TABLE "workflow_queues" DROP "team_id";
+
+./dbdeployer.sh -f central/rollback/20150521_add_team_id_to_workflow_queues.sql 
+
+SHOW ROLLFORWARD
+./dbdeployer.sh -f central/changes/20150521_add_team_id_to_workflow_queues.sql 
+
+TOUCH CHANGE FILE
+touch central/changes/20160625_1_empty_change.sql
+touch central/changes/20160625_2_empty_change.sql
+
+SHOW REPORT HAS FILE
+./dbdeployer.sh –d central –r
+
+DEPLOY FILES, SECOND FILE WITH SKIP FLAG
+./dbdeployer.sh -f central/changes/20160625_2_empty_change.sql 
+./dbdeployer.sh -f central/changes/20160625_empty_change.sql -k 
+
+SHOW DEPLOYMENTS DB
+psql deployments
+select * from deployment_tracker;
+
+SHOW DATABASE WITH ENVIRONMENT
+./dbdeployer.sh -d reporting_api –r
+./dbdeployer.sh –e dev –d reporting_api –r
+
