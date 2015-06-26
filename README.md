@@ -1,2 +1,2 @@
-# conferences
-This is where I store slide decks for conferences I've spoken at
+# Conferences
+This is where I store slide decks for conferences I've spoken.
