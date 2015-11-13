@@ -32,8 +32,10 @@ psql deployments
 select * from deployment_tracker;
 
 SHOW SQL FILES
-vim /var/lib/pgsql/databases/sampledb/changes/20150928_1_base_tables.sql
-vim /var/lib/pgsql/databases/sampledb/rollback/20150928_1_base_tables.sql
+cd /var/lib/pgsql/databases
+ls
+vim sampledb/changes/20150928_1_base_tables.sql
+vim sampledb/rollback/20150928_1_base_tables.sql
 
 SHOW OFFERS TO CREATE DB
 dbdeployer –d sampledb -r
