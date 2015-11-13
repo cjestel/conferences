@@ -1,0 +1,77 @@
+INSTALL
+cd
+git clone https://github.com/covermymeds/dbdeployer.git
+sudo dbdeployer/dbdeployer_install.sh
+
+SETUP LOCATION OF YOUR DATABASES DIR
+#as user you will deploy as
+sudo su postgres
+cd
+git clone https://github.com/cjestel/databases
+echo "db_basedir='/var/lib/pgsql/databases'" > ~/.dbdeployer
+
+SETUP TRACKING DATABASE (for postgres)
+createdb deployments
+dbdeployer -D /var/lib/dbdeployer -d deployments -e postgres -u
+
+SHOW HELP
+dbdeployer –h
+
+SHOW CONFIG FILE
+vim /etc/dbdeployer/config.sh
+
+SHOW OVERRIDE FILE
+vim ~/.dbdeployer
+
+ADD DROP AND RELOAD to OVERRIDE FILE
+allow_drop_and_reload='true'
+
+SHOW DEPLOYMENT DATABASE TRACKS DBDEPLOYER
+psql deployments
+\x
+select * from deployment_tracker;
+
+SHOW SQL FILES
+vim /var/lib/pgsql/databases/sampledb/changes/20150928_1_base_tables.sql
+vim /var/lib/pgsql/databases/sampledb/rollback/20150928_1_base_tables.sql
+
+SHOW OFFERS TO CREATE DB
+dbdeployer –d sampledb -r
+(cancel/NO)
+
+SHOW CREATES DB WITH CONFIRM FLAG AND RUNS REPORT
+dbdeployer –d sampledb –c -r
+
+SHOW SUCCESSFUL SINGLE FILE DEPLOYMENT
+dbdeployer -f /var/lib/pgsql/databases/sampledb/schema/1000_schema.sql
+
+SHOW FILE NO LONGER IN REPORT
+dbdeployer –d sampledb –r
+
+SHOW BRING TO CURRENT FLAG
+dbdeployer –d sampledb –u
+
+SHOW REPORT IS EMPTY NOW
+dbdeployer –d sampledb –r
+
+SHOW ROLLBACK
+dbdeployer -f /var/lib/pgsql/databases/sampledb/rollback/20150928_4_add_seed_data.sql
+
+SHOW ROLLFORWARD
+dbdeployer -f /var/lib/pgsql/databases/sampledb/changes/20150928_4_add_seed_data.sql
+
+TOUCH CHANGE FILE
+touch /var/lib/pgsql/databases/sampledb/changes/20151002_1_empty_change.sql
+
+SHOW REPORT HAS FILE
+dbdeployer –d sampledb –r
+
+DEPLOY FILE WITH SKIP FLAG
+dbdeployer -f /var/lib/pgsql/databases/sampledb/changes/20151002_1_empty_change.sql -k 
+
+SHOW DEPLOYMENTS DB
+psql deployments
+select * from deployment_tracker;
+
+SHOW LOG FILES
+vim /var/lib/pgsql/databases/sampledb/changes/output/20150928_4_add_seed_data.sql.out
