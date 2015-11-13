@@ -12,6 +12,7 @@ echo "db_basedir='/var/lib/pgsql/databases'" > ~/.dbdeployer
 
 SETUP TRACKING DATABASE (for postgres)
 createdb deployments
+#show below command and explain file system overrides
 dbdeployer -D /var/lib/dbdeployer -d deployments -e postgres -u
 
 SHOW HELP
@@ -38,23 +39,23 @@ vim sampledb/changes/20150928_1_base_tables.sql
 vim sampledb/rollback/20150928_1_base_tables.sql
 
 SHOW OFFERS TO CREATE DB
-dbdeployer –d sampledb -r
+dbdeployer -d sampledb -r
 (cancel/NO)
 
 SHOW CREATES DB WITH CONFIRM FLAG AND RUNS REPORT
-dbdeployer –d sampledb –c -r
+dbdeployer -d sampledb -c -r
 
 SHOW SUCCESSFUL SINGLE FILE DEPLOYMENT
 dbdeployer -f /var/lib/pgsql/databases/sampledb/schema/1000_schema.sql
 
 SHOW FILE NO LONGER IN REPORT
-dbdeployer –d sampledb –r
+dbdeployer -d sampledb -r
 
 SHOW BRING TO CURRENT FLAG
-dbdeployer –d sampledb –u
+dbdeployer -d sampledb -u
 
 SHOW REPORT IS EMPTY NOW
-dbdeployer –d sampledb –r
+dbdeployer -d sampledb -r
 
 SHOW ROLLBACK
 dbdeployer -f /var/lib/pgsql/databases/sampledb/rollback/20150928_4_add_seed_data.sql
@@ -66,7 +67,7 @@ TOUCH CHANGE FILE
 touch /var/lib/pgsql/databases/sampledb/changes/20151002_1_empty_change.sql
 
 SHOW REPORT HAS FILE
-dbdeployer –d sampledb –r
+dbdeployer -d sampledb -r
 
 DEPLOY FILE WITH SKIP FLAG
 dbdeployer -f /var/lib/pgsql/databases/sampledb/changes/20151002_1_empty_change.sql -k 
