@@ -24,9 +24,6 @@ vim /etc/dbdeployer/config.sh
 SHOW OVERRIDE FILE
 vim ~/.dbdeployer
 
-ADD DROP AND RELOAD to OVERRIDE FILE
-allow_drop_and_reload='true'
-
 SHOW DEPLOYMENT DATABASE TRACKS DBDEPLOYER
 psql deployments
 \x
@@ -58,9 +55,12 @@ SHOW REPORT IS EMPTY NOW
 dbdeployer -d sampledb -r
 
 SHOW ROLLBACK
+#This should only happen in test environments to prevent checkouts of master
+#from becoming inconsistent.
 dbdeployer -f /var/lib/pgsql/databases/sampledb/rollback/20150928_4_add_seed_data.sql
 
 SHOW ROLLFORWARD
+#This should only happen in test environments or rare use cases
 dbdeployer -f /var/lib/pgsql/databases/sampledb/changes/20150928_4_add_seed_data.sql
 
 TOUCH CHANGE FILE
@@ -72,8 +72,15 @@ dbdeployer -d sampledb -r
 DEPLOY FILE WITH SKIP FLAG
 dbdeployer -f /var/lib/pgsql/databases/sampledb/changes/20151002_1_empty_change.sql -k 
 
+DROP AND RELOAD (will fail)
+dbdeployer -d sampledb -X
+
+ADD DROP AND RELOAD TO OVERRIDE FILE OR CONFIG
+allow_drop_and_reload='true'
+
 SHOW DEPLOYMENTS DB
 psql deployments
+\x
 select * from deployment_tracker;
 
 SHOW LOG FILES
